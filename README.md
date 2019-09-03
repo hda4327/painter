@@ -1,6 +1,6 @@
-##Description#
-	jPainter is a brower-based painting tool,based on HTML5 Canvas and jquery. 
-## How to Run it#
-   Just open jPainter.html by Internet Explorer,Firfox and etc.
+##这是第一个版本的涂鸦工具#
+可编辑多个字体，完美的撤回和恢复功能
 
-Have fun !!!
+图片功能还欠缺
+
+注：目前还无法删除选中字体（后续要重写撤回代码，可能会取消恢复功能）
