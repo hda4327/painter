@@ -1,0 +1,282 @@
+<html>
+<head>
+    <title>MyHtml.html</title>
+
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="jquery-ui-1.11.0.custom/external/jquery/jquery-1.11.0.js"></script>
+    <link rel="stylesheet" href="jquery-ui-1.11.0.custom/jquery-ui.css">
+    <link rel="stylesheet" href="jquery-ui-1.11.0.custom/jquery-ui.structure.css">
+    <link rel="stylesheet" href="colorpicker-master/jquery.colorpicker.css">
+    <link rel="stylesheet" href="jquery-ui-1.11.0.custom/jquery-ui.theme.css">
+    <script type="text/javascript" src="jquery-ui-1.11.0.custom/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/anyLine.js"></script>
+    <script type="text/javascript" src="colorpicker-master/jquery.colorpicker.js"></script>
+    <script type="text/javascript" src="colorpicker-master/parts/jquery.ui.colorpicker-rgbslider.js"></script>
+    <!--<script type="text/javascript" src="js/json2.js"></script>-->
+    <script type="text/javascript" src="js/canvas.js"></script>
+
+    <style type="text/css">
+        * {
+            font-family: '微软雅黑';
+            font-size: 12px;
+        }
+
+        canvas {
+            border: 2px solid gray;
+        }
+
+        .container_pencil {
+            cursor: url(images/PencilToolCursor.gif), pointer;
+        }
+
+        .container_eraser {
+            cursor: url(images/test.png), pointer;
+        }
+
+        .container_font {
+            cursor: crosshair;
+        }
+
+        .speed {
+            top: 15px;
+        }
+
+        .ui-selectmenu-text {
+            font-size: 12px;
+        }
+
+        #dialog {
+            display: none;
+        }
+
+
+    </style>
+</head>
+
+
+<body style="">
+<img src="images/pandas.png" alt="" style="width: 700px;height: 400px">
+<button class="show-canvas">显示</button>
+
+
+<script>
+
+    $('.show-canvas').click(function () {
+        $('.ui-dialog').css('display', 'block');
+        $('#dialog').css({'display': 'block'});
+    });
+    (function () {
+        setTimeout(function () {
+            $('.ui-dialog').css({'display': 'none'});
+        }, 1);
+
+    })();
+</script>
+
+
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" tabindex="-1"
+     role="dialog" aria-describedby="dialog" aria-labelledby="ui-id-1"
+     style="position: absolute; top: 159.5px; left: 134px; height: auto; width: 990px; display: block;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle"><span
+            id="ui-id-1" class="ui-dialog-title">HTML画板</span>
+        <button type="button"
+                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close"
+                role="button" title="Close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span
+                class="ui-button-text">Close</span></button>
+    </div>
+    <div id="dialog" class="ui-dialog-content ui-widget-content"
+         style="width: auto; min-height: 0px; max-height: none; height: 601px; display: block;">
+
+        <div style="font-size:14px;">
+            <fieldset style="float:left;width:250px;">
+                <legend>工具</legend>
+                <div id="toolsOptions">
+                    <input type="radio" id="tools_pencil" name="toolsOption" checked="checked"
+                           class="ui-helper-hidden-accessible"><label for="tools_pencil"
+                                                                      class="ui-state-active ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                                                                      role="button"><span
+                        class="ui-button-icon-primary ui-icon ui-icon-pencil"></span><span
+                        class="ui-button-text">画笔</span></label> &nbsp;
+                    <input type="radio" id="tools_eraser" name="toolsOption" class="ui-helper-hidden-accessible"><label
+                        for="tools_eraser"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                        role="button"><span class="ui-button-icon-primary ui-icon ui-icon-bullet"></span><span
+                        class="ui-button-text">橡皮擦</span></label> &nbsp;
+                    <input type="radio" id="tools_trash" name="toolsOption" class="ui-helper-hidden-accessible"><label
+                        for="tools_trash"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                        role="button"><span class="ui-button-icon-primary ui-icon ui-icon-trash"></span><span
+                        class="ui-button-text">清空</span></label>
+                    <div style="border-top:1px dashed gray;margin-top:8px;padding-top:8px;"><span>
+                    <button id="tools_save"
+                            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                            role="button"><span class="ui-button-icon-primary ui-icon ui-icon-disk"></span><span
+                            class="ui-button-text">save</span></button>&nbsp;&nbsp;&nbsp;
+                    <button id="tools_undo"
+                            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                            role="button"><span
+                            class="ui-button-icon-primary ui-icon ui-icon-arrowreturnthick-1-w"></span><span
+                            class="ui-button-text">undo</span></button>&nbsp;&nbsp;&nbsp;
+                    <button id="tools_redo"
+                            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                            role="button"><span
+                            class="ui-button-icon-primary ui-icon ui-icon-arrowreturnthick-1-e"></span><span
+                            class="ui-button-text">redo</span></button>
+                </span></div>
+                </div>
+
+            </fieldset>
+            <fieldset style="float:left;">
+                <legend>多边形</legend>
+                <div><span>
+                <input type="radio" id="tools_line" name="toolsOption" class="ui-helper-hidden-accessible"><label
+                        for="tools_line"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                        role="button"><span class="ui-button-icon-primary ui-icon ui-icon-minusthick"></span><span
+                        class="ui-button-text">直线</span></label>
+                <input type="radio" id="tools_rectangle" name="toolsOption" class="ui-helper-hidden-accessible"><label
+                        for="tools_rectangle"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                        role="button"><span class="ui-button-icon-primary ui-icon ui-icon-stop"></span><span
+                        class="ui-button-text">矩形</span></label>
+                <input type="radio" id="tools_circle" name="toolsOption" class="ui-helper-hidden-accessible"><label
+                        for="tools_circle"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                        role="button"><span class="ui-button-icon-primary ui-icon ui-icon-radio-off"></span><span
+                        class="ui-button-text">文字</span></label>
+            </span></div>
+            </fieldset>
+            <fieldset style="float:left;width:180px;">
+                <legend>线条设置</legend>
+                <span style="float: left;margin-top: 6px;">线条粗细: </span>
+                <select id="penWidth" style="display: none;">
+                    <option value="1" selected="">1px</option>
+                    <option value="2">2px</option>
+                    <option value="4">4px</option>
+                    <option value="6">6px</option>
+                    <option value="8">8px</option>
+                    <option value="12">12px</option>
+                    <option value="14">14px</option>
+                    <option value="16">16px</option>
+                    <option value="18">18px</option>
+                </select><span class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0"
+                               id="penWidth-button" role="combobox" aria-expanded="false" aria-autocomplete="list"
+                               aria-owns="penWidth-menu" aria-haspopup="true" style="width: 68px;"><span
+                    class="ui-icon ui-icon-triangle-1-s"></span><span class="ui-selectmenu-text">1px</span></span>
+                <div style="border-top:1px dashed gray;margin-top:8px;padding-top:8px;">
+                    <span>边框色:<input id="colorpicker-popup" type="text" value="000000"
+                                     style="width: 72px;display:none; "><button type="button"
+                                                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                                                role="button"><span
+                            class="ui-button-text"><img src="./images/ui-colorpicker.png" alt="Color" title="Color"
+                                                        style="background-color: rgb(0, 0, 0);"></span></button></span>&nbsp;
+                    <span>填充色:<input id="colorpicker-popup2" type="text" value="fe9810"
+                                     style="width: 72px;display:none; "><button type="button"
+                                                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                                                role="button"><span
+                            class="ui-button-text"><img src="./images/ui-colorpicker.png" alt="Color" title="Color"
+                                                        style="background-color: rgb(254, 152, 16);"></span></button></span>
+                </div>
+            </fieldset>
+            <fieldset style="float:left;width:160px;">
+                <legend>字体设置</legend>
+                <span><span style="float: left;margin-top: 6px;">字体大小: </span>
+                <select id="fontSize" style="display: none;">
+                     <option value="10px">8px</option>
+                     <option value="12px">10px</option>
+                    <option value="8px" selected="">12px</option>
+                     <option value="14px">14px</option>
+                     <option value="16px">16px</option>
+                     <option value="18px">18px</option>
+                     <option value="20px">20px</option>
+                     <option value="22px">22px</option>
+                     <option value="24px">24px</option>
+                     <option value="26px">26px</option>
+                     <option value="28px">28px</option>
+                     <option value="30px">30px</option>
+                     <option value="32px">32px</option>
+                     <option value="34px">34px</option>
+                     <option value="36px">36px</option>
+             </select><span class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0"
+                            id="fontSize-button" role="combobox" aria-expanded="false" aria-autocomplete="list"
+                            aria-owns="fontSize-menu" aria-haspopup="true" style="width: 98px;"><span
+                            class="ui-icon ui-icon-triangle-1-s"></span><span
+                            class="ui-selectmenu-text">12px</span></span>
+             </span>
+                <br>
+                <span><span style="float: left;margin-top: 6px;">字体选择:</span>
+                <select id="fontType" style="top: 20px; display: none;">
+                     <option value="宋体">宋体</option>
+                     <option value="微软雅黑">微软雅黑</option>
+                     <option value="仿宋">仿宋</option>
+                     <option value="Arial" selected="">Arial</option>
+                     <option value="Consolas">Consolas</option>
+             </select><span class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0"
+                            id="fontType-button" role="combobox" aria-expanded="false" aria-autocomplete="list"
+                            aria-owns="fontType-menu" aria-haspopup="true" style="width: 98px;"><span
+                            class="ui-icon ui-icon-triangle-1-s"></span><span
+                            class="ui-selectmenu-text">Arial</span></span>
+        </span>
+                <span style="font-weight:bold;"><input type="checkbox" id="boldOption" name="fontOption"
+                                                       class="ui-helper-hidden-accessible"><label for="boldOption"
+                                                                                                  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                                                                  role="button"><span
+                        class="ui-button-text">B</span></label></span>
+                <span style="font-style: italic;"><input type="checkbox" id="italicOption" name="italicOption"
+                                                         class="ui-helper-hidden-accessible"><label for="italicOption"
+                                                                                                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                                                                    role="button"><span
+                        class="ui-button-text">I</span></label></span>
+            </fieldset>
+
+            <div style="clear:both;"></div>
+        </div>
+
+        <div style="background:white;position:relative;" id="container">
+            <div id="temp" style="border:1px solid gray;width:1px;height:1px;position:absolute;display:none;"></div>
+
+            <div class="ui-wrapper"
+                 style="overflow: hidden; position: relative; width: 884px; height: 404px; top: 0px; left: 0px; margin: 0px;">
+                <canvas id="myCanvas" width="880" height="400" class="container_pencil ui-resizable"
+                        style="resize: none; position: static; zoom: 1; display: block; margin: 0px; height: 400px; width: 880px;">
+
+                </canvas>
+                <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>
+                <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+                <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"
+                     style="z-index: 90;"></div>
+            </div>
+            <div style="border-top: 1px solid red; width: 1.41421px; transform: rotate(45deg); position: absolute; left: -0.207107px; top: 0.5px;"></div>
+            <div style="border:1px solid gray;width:1px;height:1px;position:absolute;display:none;"></div>
+            <textarea rows="3" cols="20"
+                      style="background: transparent; position: absolute; display: none; font-size: 8px; font-family: Arial; color: rgb(254, 152, 16);"></textarea>
+        </div>
+        <span id="show" style="display:none;"></span>
+
+
+    </div>
+    <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div>
+    <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div>
+    <div class="ui-selectmenu-menu ui-front">
+        <ul aria-hidden="true" aria-labelledby="penWidth-button" id="penWidth-menu"
+            class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0"></ul>
+    </div>
+    <div class="ui-selectmenu-menu ui-front">
+        <ul aria-hidden="true" aria-labelledby="fontSize-button" id="fontSize-menu"
+            class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0"></ul>
+    </div>
+    <div class="ui-selectmenu-menu ui-front">
+        <ul aria-hidden="true" aria-labelledby="fontType-button" id="fontType-menu"
+            class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0"></ul>
+    </div>
+</div>
+</body>
+</html>

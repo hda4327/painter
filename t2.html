@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="jquery-ui-1.11.0.custom/external/jquery/jquery-1.11.0.js"></script>
+    <style>
+        /*.disable_text_highlighting {*/
+        /*    -webkit-user-select: none; !* Webkit *!*/
+        /*    -moz-user-select: none;    !* Firefox *!*/
+        /*    -ms-user-select: none;     !* IE 10  *!*/
+        /*    !* Currently not supported in Opera but will be soon *!*/
+        /*    -o-user-select: none;*/
+        /*    -khtml-user-select:none;*/
+        /*    user-select: none;*/
+        /*    !*outline: none;*!*/
+        /*}*/
+        .table {
+            text-align: center;
+            vertical-align:middle;
+            height: 39px;
+            overflow: hidden;
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select:none;
+            -khtml-user-select:none; /* you could also put this in a class */
+            -webkit-user-select:none;/* and add the CSS class here instead */
+            -ms-user-select:none;
+            user-select:none;/**禁止选中文字*/
+
+            text-rendering: unset;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--<div class="disable_text_highlighting">wq das fafsdasd</div>-->
+
+<input type="text" class="disable_text_highlighting table">
+
+
+<script>
+    $(".disable_text_highlighting").attr('unselectable','on').css({'-moz-user-select':'-moz-none',
+        '-moz-user-select':'none',
+        '-o-user-select':'none',
+        '-khtml-user-select':'none', /* you could also put this in a class */
+        '-webkit-user-select':'none',/* and add the CSS class here instead */
+        '-ms-user-select':'none',
+        'user-select':'none'
+    }).bind('selectstart', function(){ return false; });
+</script>
+</body>
+</html>
